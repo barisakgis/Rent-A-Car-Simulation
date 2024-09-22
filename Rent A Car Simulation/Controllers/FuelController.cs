@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rent_A_Car_Simulation.DTOs;
-using Rent_A_Car_Simulation.Services;
+using Entities.DataTransferObject;
+using Services.Abstract;
 using System.Threading.Tasks;
 
 namespace Rent_A_Car_Simulation.Controllers

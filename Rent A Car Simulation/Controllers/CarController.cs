@@ -1,35 +1,8 @@
-﻿//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Mvc;
-//using Rent_A_Car_Simulation.Services;
-
-//namespace Rent_A_Car_Simulation.Controllers
-//{
-//    [Route("api/[controller]")]
-//    [ApiController]
-
-//    public class CarController : ControllerBase
-//    {
-//        private readonly CarService _carService;
-
-//        public CarController(CarService carService)
-//        {
-//            _carService = carService;
-//        }
-
-//        [HttpGet("details")]
-//        public async Task<IActionResult> GetCarDetails()
-//        {
-//            var result = await _carService.GetAllDetailsAsync();
-//            return Ok(result);
-//        }
-//    }
-
-//}
-
+﻿using Entities.DataTransferObject;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Rent_A_Car_Simulation.DTOs;
-using Rent_A_Car_Simulation.Services;
+using Services.Abstract;
+
 
 namespace Rent_A_Car_Simulation.Controllers
 {
@@ -104,8 +77,17 @@ namespace Rent_A_Car_Simulation.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCar([FromBody] CarDto carDto)
         {
-            await _carService.AddCarAsync(carDto);
-            return CreatedAtAction(nameof(GetCarDetailById), new { id = carDto.Id }, carDto);
+            try
+            {
+                await _carService.AddCarAsync(carDto);
+                return CreatedAtAction(nameof(GetCarDetailById), new { id = carDto.Id }, carDto);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+               
+            }
+          
         }
 
         [HttpPut]

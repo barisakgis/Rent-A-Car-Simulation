@@ -1,12 +1,22 @@
 using Microsoft.EntityFrameworkCore;
-using Rent_A_Car_Simulation.Data;
-using Rent_A_Car_Simulation.Repositories;
-using Rent_A_Car_Simulation.Repository_Interfaces;
-using Rent_A_Car_Simulation.Service_Interfaces;
-using Rent_A_Car_Simulation.Services;
-using Rent_A_Car_Simulation.Services.Interfaces;
+using Repositories.Abstract;
+using Repositories.Concrete;
+using Repositories.Context;
+using Services.Abstract;
+using Services.Concrete;
+using Services.MappingProfiles;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+// CORS ayarlarý
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
 
 // Add services to the container.
 
@@ -33,7 +43,7 @@ builder.Services.AddScoped<IFuelService, FuelService>();
 builder.Services.AddScoped<ITransmissionService, TransmissionService>();
 
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 
@@ -45,6 +55,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
